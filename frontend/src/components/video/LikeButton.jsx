@@ -1,16 +1,30 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import api from "../../api/axios"
 
 const LikeButton = ({ videoId, initialLiked, initialCount }) => {
-  const [liked, setLiked] = useState(initialLiked)
-  const [count, setCount] = useState(initialCount)
+  const [liked, setLiked] = useState(initialLiked ?? false)
+  const [count, setCount] = useState(initialCount ?? 0)
+
+  // ✅ Important when video changes
+  useEffect(() => {
+    setLiked(initialLiked ?? false)
+    setCount(initialCount ?? 0)
+  }, [initialLiked, initialCount])
 
   const toggleLike = async () => {
-    setLiked(!liked)
-    setCount(liked ? count - 1 : count + 1)
+  try {
+    const res = await api.post(`/likes/toggle/v/${videoId}`)
 
-    await api.post(`/likes/toggle/video/${videoId}`)
+    const isLiked = res?.data?.data?.isLiked ?? false
+    const likesCount = res?.data?.data?.likesCount ?? 0
+
+    setLiked(isLiked)
+    setCount(likesCount)
+
+  } catch (err) {
+    console.error("Like toggle failed", err)
   }
+}
 
   return (
     <button
@@ -25,3 +39,5 @@ const LikeButton = ({ videoId, initialLiked, initialCount }) => {
 }
 
 export default LikeButton
+
+

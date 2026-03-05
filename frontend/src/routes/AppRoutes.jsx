@@ -8,7 +8,7 @@ import Layout from "../components/layout/Layout"
 
 import VideoDetail from "../pages/VideoDetail"
 import UploadVideo from "../pages/UploadVideo"
-
+import ChannelDetail from "../pages/ChannelDetails" // 🔥 import new page
 
 const AppRoutes = () => (
   <Routes>
@@ -38,26 +38,38 @@ const AppRoutes = () => (
     />
 
     <Route
-  path="/video/:id"
-  element={
-    <ProtectedRoute>
-      <Layout>
-        <VideoDetail />
-      </Layout>
-    </ProtectedRoute>
-  }
-/>
+      path="/video/:id"
+      element={
+        <ProtectedRoute>
+          <Layout>
+            <VideoDetail />
+          </Layout>
+        </ProtectedRoute>
+      }
+    />
 
-<Route
-  path="/upload"
-  element={
-    <ProtectedRoute>
-      <Layout>
-        <UploadVideo />
-      </Layout>
-    </ProtectedRoute>
-  }
-/>
+    <Route
+      path="/upload"
+      element={
+        <ProtectedRoute>
+          <Layout>
+            <UploadVideo />
+          </Layout>
+        </ProtectedRoute>
+      }
+    />
+
+    {/* 🔥 New Route for Channel Detail */}
+    <Route
+      path="/channel/:username"
+      element={
+        <ProtectedRoute>
+          <Layout>
+            <ChannelDetail />
+          </Layout>
+        </ProtectedRoute>
+      }
+    />
   </Routes>
 )
 

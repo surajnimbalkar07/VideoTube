@@ -2,28 +2,24 @@ import PublishToggle from "./PublishToggle"
 import api from "../../api/axios"
 
 const VideoTable = ({ videos, refresh }) => {
-console.log(videos.isPublish);
-console.log({videos});
-
-
   const deleteVideo = async (id) => {
     await api.delete(`/videos/${id}`)
     refresh()
   }
 
   return (
-    <div className="glass rounded-xl p-6 overflow-x-auto">
-      <h3 className="text-xl font-semibold mb-4">
+    <div >
+      <h3 className="text-2xl font-semibold text-white mb-6">
         Your Videos
       </h3>
 
-      <table className="w-full text-left">
-        <thead className="text-gray-400 border-b border-white/10">
+      <table className="w-full text-left table-auto">
+        <thead className="text-gray-400 border-b border-slate-700">
           <tr>
-            <th className="py-3">Title</th>
-            <th>Views</th>
-            <th>Status</th>
-            <th>Actions</th>
+            <th className="py-3 px-4">Title</th>
+            <th className="py-3 px-4">Views</th>
+            <th className="py-3 px-4">Status</th>
+            <th className="py-3 px-4">Actions</th>
           </tr>
         </thead>
 
@@ -31,12 +27,12 @@ console.log({videos});
           {videos.map((video) => (
             <tr
               key={video._id}
-              className="border-b border-white/5"
+              className="border-b border-slate-800 hover:bg-slate-900/50 transition"
             >
-              <td className="py-3">{video.title}</td>
-              <td>{video.views}</td>
+              <td className="py-3 px-4 text-white font-medium">{video.title}</td>
+              <td className="py-3 px-4 text-gray-300">{video.views}</td>
 
-              <td>
+              <td className="py-3 px-4">
                 <PublishToggle
                   videoId={video._id}
                   initialStatus={video.isPublish}
@@ -44,10 +40,10 @@ console.log({videos});
                 />
               </td>
 
-              <td>
+              <td className="py-3 px-4">
                 <button
                   onClick={() => deleteVideo(video._id)}
-                  className="text-red-500 text-sm"
+                  className="text-red-500 hover:text-red-600 font-medium transition text-sm"
                 >
                   Delete
                 </button>

@@ -1,8 +1,8 @@
-import mongoose, {isValidObjectId} from "mongoose"
-import {Like} from "../models/like.model.js"
-import {ApiError} from "../utils/ApiError.js"
-import {ApiResponse} from "../utils/ApiResponse.js"
-import {asyncHandler} from "../utils/asyncHandler.js"
+import mongoose, { isValidObjectId } from "mongoose"
+import { Like } from "../models/like.model.js"
+import { ApiError } from "../utils/ApiError.js"
+import { ApiResponse } from "../utils/ApiResponse.js"
+import { asyncHandler } from "../utils/asyncHandler.js"
 
 const toggleVideoLike = asyncHandler(async (req, res) => {
     const { videoId } = req.params
@@ -11,9 +11,10 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
         video: videoId,
         likedBy: req.user._id
     })
-
+    let isLiked
     if (existingLike) {
         await existingLike.deleteOne()
+        isLiked = false
         return res.status(200).json(
             new ApiResponse(200, {}, "Video unliked")
         )
@@ -23,9 +24,16 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
         video: videoId,
         likedBy: req.user._id
     })
+    isLiked = true
 
+    const likesCount = await Like.countDocuments({
+        video: videoId
+    })
     return res.status(200).json(
-        new ApiResponse(200, {}, "Video liked")
+        new ApiResponse(200, {
+            isLiked,
+            likesCount
+        }, "Video liked")
     )
 })
 

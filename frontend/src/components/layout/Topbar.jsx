@@ -1,26 +1,69 @@
+import { useEffect, useState } from "react"
+import { useNavigate, useLocation } from "react-router-dom"
 import { useAuth } from "../../context/AuthContext"
 
 const Topbar = () => {
   const { user, logout } = useAuth()
+  const navigate = useNavigate()
+  const location = useLocation()
 
-  return (
-    <header className="glass p-4 flex justify-between items-center">
-      <input
-        placeholder="Search videos..."
-        className="bg-gray-800 px-4 py-2 rounded w-1/3"
-      />
+  const [query, setQuery] = useState("")
 
-      <div className="flex items-center gap-4">
-        <span>{user?.username}</span>
-        <button
-          onClick={logout}
-          className="bg-red-600 px-3 py-1 rounded"
-        >
-          Logout
-        </button>
-      </div>
-    </header>
-  )
-}
+  useEffect(() => {
+
+    // const timer = setTimeout(() => {
+      // if (query.trim()) {
+      //   navigate(/?search=${query}) } 
+      // else { navigate("/") } }, 500) 
+
+      //this above is wrong it will redirect to home alway if query is empty
+
+    const timer = setTimeout(() => {
+          if (!query.trim()) return   // ⬅️ do nothing if empty
+
+          // Only navigate if we're not already on home search
+          navigate(`/?search=${query}&page=1`)
+        }, 500)
+
+        return () => clearTimeout(timer)
+      }, [query])
+
+    return (
+      <header className="flex justify-between items-center px-6 py-4 bg-slate-950 border-b border-slate-800">
+
+        {/* Search */}
+        <input
+          placeholder="Search videos..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="w-1/3 px-4 py-2 rounded-full 
+                   bg-slate-900 border border-slate-800
+                   text-white placeholder-slate-500
+                   focus:outline-none focus:border-indigo-500"
+        />
+
+        {/* User */}
+        <div className="flex items-center gap-3">
+          {user?.avatar && (
+            <img
+              src={user.avatar}
+              alt={user.username}
+              className="w-8 h-8 rounded-full object-cover"
+            />
+          )}
+          <span className="text-sm text-white">
+            {user?.username}
+          </span>
+
+          <button
+            onClick={logout}
+            className="px-4 py-1 rounded-full border border-slate-700 hover:border-red-500 text-sm transition"
+          >
+            Logout
+          </button>
+        </div>
+      </header>
+    )
+  }
 
 export default Topbar
