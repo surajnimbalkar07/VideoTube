@@ -9,24 +9,17 @@ const Topbar = () => {
 
   const [query, setQuery] = useState("")
 
-  useEffect(() => {
+ useEffect(() => {
+  const timer = setTimeout(() => {
+    if (!query.trim()) {
+      navigate("/")
+    } else {
+      navigate(`/?search=${query}&page=1`)
+    }
+  }, 500)
 
-    // const timer = setTimeout(() => {
-      // if (query.trim()) {
-      //   navigate(/?search=${query}) } 
-      // else { navigate("/") } }, 500) 
-
-      //this above is wrong it will redirect to home alway if query is empty
-
-    const timer = setTimeout(() => {
-          if (!query.trim()) return   // ⬅️ do nothing if empty
-
-          // Only navigate if we're not already on home search
-          navigate(`/?search=${query}&page=1`)
-        }, 500)
-
-        return () => clearTimeout(timer)
-      }, [query])
+  return () => clearTimeout(timer)
+}, [query])
 
     return (
       <header className="flex justify-between items-center px-6 py-4 bg-slate-950 border-b border-slate-800">
