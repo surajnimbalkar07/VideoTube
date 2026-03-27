@@ -7,7 +7,7 @@ It allows users to upload, manage, and analyze video content with a clean dashbo
 
 ## 📸 Preview
 
-![App Preview](./preview.png)
+![App Preview](./1773342613644.jfif)
 
 ---
 
